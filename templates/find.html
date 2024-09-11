@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Get Widevine Keys</title>
+    <link rel="stylesheet" href="/static/main.css" />
+    <script defer src="/static/search.js"></script>
+  </head>
+  <body>
+    <nav>
+      <ul class="nav-list">
+        <li class="nav-item"><a href="/">Home</a></li>
+        <li class="nav-item"><a href="./upload">Upload</a></li>
+        <li class="nav-item"><a href="./findpssh">Find</a></li>
+      </ul>
+    </nav>
+
+    <main>
+      <section class="wdvn-request">
+        <header>
+          <h1 class="section-title">Send Widevine Request</h1>
+        </header>
+        <div class="form-container">
+          <form>
+            <div class="form-item">
+              <label for="pssh">PSSH/KID:</label>
+              <input
+                data-lpignore="true"
+                type="text"
+                id="pssh"
+                name="pssh"
+                value="a5c03409fcca515485218595ee15602c"
+              />
+            </div>
+            <input type="submit" value="Search" />
+          </form>
+        </div>
+        <div class="info-container">
+          <span id="key-count-text">Total key count: </span>
+          <span id="key-count">Loading... </span>
+          <div class="result-container" id="demo">
+            <pre>Send a request to see the result.</pre>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
