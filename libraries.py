@@ -20,8 +20,8 @@ class Library:
     store_request = {}
 
     def __init__(self):
-        self.database = None  # self.connect_database()
-        self.cdm = None  # self.connect_cdm()
+        self.database = None
+        self.cdm = None
 
     def connect_database(self):
         self.database = sqlite3.connect('database.db', isolation_level=None)
@@ -39,13 +39,13 @@ class Library:
 
     def cache_keys(self, data):
         self.connect_database()
-        for keys in data['keys']:
-            for key in keys:
-                # self.database[keys[key].split(':')[0]] = data
-                self.database.execute(
-                    "INSERT OR REPLACE INTO DATABASE (pssh,headers,KID,proxy,time,license,keys) VALUES (?,?,?,?,?,?,?)",
-                    (data['pssh'], json.dumps(data['headers']), key,
-                     json.dumps(data['proxy']), data['time'], data['license'], json.dumps(data['keys'])))
+        if data['keys'] and isinstance(data['keys'][0], dict) and 'key' in data['keys'][0]:
+            key_string = data['keys'][0]['key']
+            kid = key_string.split(':')[0]  # Mengambil KID dari key pertama
+            self.database.execute(
+                "INSERT OR REPLACE INTO DATABASE (pssh,headers,KID,proxy,time,license,keys) VALUES (?,?,?,?,?,?,?)",
+                (data['pssh'], json.dumps(data['headers']), kid,
+                 json.dumps(data['proxy']), data['time'], data['license'], json.dumps(data['keys'])))
         self.close_database()
 
     def cached_number(self):
@@ -141,7 +141,6 @@ class Library:
 
 class Pywidevine:
     def __init__(self, proxy, license_, pssh, headers, buildinfo, cache=False, response=None, challenge=False):
-
         self.license = license_
         self.pssh = pssh
         self.headers = headers
@@ -198,7 +197,6 @@ class Pywidevine:
 
     def main(self, curl=False):
         # Cached
-
         if self.cache:
             cached = Library().match(self.pssh)
             if cached:
